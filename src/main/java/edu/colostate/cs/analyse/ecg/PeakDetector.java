@@ -32,7 +32,7 @@ public abstract class PeakDetector {
         updateThresholds();
     }
 
-    public synchronized void  detectPulse(Record record) {
+    public void  detectPulse(Record record) {
 
         if (this.lastRecord != null) {
 

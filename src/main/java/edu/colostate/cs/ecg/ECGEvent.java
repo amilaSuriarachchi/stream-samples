@@ -16,6 +16,7 @@ import java.io.IOException;
  */
 public class ECGEvent extends Event {
 
+    private long sequenceNo;
     private double time;
     private double value;
     private String streamID;
@@ -23,7 +24,8 @@ public class ECGEvent extends Event {
     public ECGEvent() {
     }
 
-    public ECGEvent(double time, double value, String streamID) {
+    public ECGEvent(double time, double value, String streamID, long sequenceNo) {
+        this.sequenceNo = sequenceNo;
         this.time = time;
         this.value = value;
         this.streamID = streamID;
@@ -36,6 +38,7 @@ public class ECGEvent extends Event {
 
     public void serialize(DataOutput dataOutput) throws MessageProcessingException {
         try {
+            dataOutput.writeLong(this.sequenceNo);
             dataOutput.writeDouble(this.time);
             dataOutput.writeDouble(this.value);
             dataOutput.writeUTF(this.streamID);
@@ -46,12 +49,21 @@ public class ECGEvent extends Event {
 
     public void parse(DataInput dataInput) throws MessageProcessingException {
         try {
+            this.sequenceNo = dataInput.readLong();
             this.time = dataInput.readDouble();
             this.value = dataInput.readDouble();
             this.streamID = dataInput.readUTF();
         } catch (IOException e) {
             throw new MessageProcessingException("Can not write the message ", e);
         }
+    }
+
+    public long getSequenceNo() {
+        return sequenceNo;
+    }
+
+    public void setSequenceNo(long sequenceNo) {
+        this.sequenceNo = sequenceNo;
     }
 
     public double getTime() {

@@ -32,18 +32,16 @@ public class EventReceiver implements Processor {
 
         ECGEvent ecgEvent = (ECGEvent) event;
 
-        if (!this.keyMap.containsKey(ecgEvent.getKey())){
-            synchronized (this.keyMap){
-                if (!this.keyMap.containsKey(ecgEvent.getKey())){
-                    System.out.println("Creating new ECG processor ...");
-                     this.keyMap.put(ecgEvent.getKey(), new ECGProcessor());
+        if (!this.keyMap.containsKey(ecgEvent.getKey())) {
+            synchronized (this.keyMap) {
+                if (!this.keyMap.containsKey(ecgEvent.getKey())) {
+                    this.keyMap.put(ecgEvent.getKey(), new ECGProcessor());
                 }
             }
         }
 
-        Record record = new Record(ecgEvent.getTime(), ecgEvent.getValue());
         ECGProcessor ecgProcessor = this.keyMap.get(ecgEvent.getKey());
-        ecgProcessor.onMessage(record);
+        ecgProcessor.onMessage(ecgEvent);
 
     }
 

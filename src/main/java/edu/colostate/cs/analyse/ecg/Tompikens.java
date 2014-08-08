@@ -50,7 +50,7 @@ public class Tompikens {
 
     }
 
-    public synchronized void bandPass(Record record) {
+    public void bandPass(Record record) {
 
 //        System.out.println("event 1 --" + record.getTime() + "," + record.getValue());
 

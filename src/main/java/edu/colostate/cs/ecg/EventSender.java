@@ -23,6 +23,7 @@ public class EventSender implements Runnable {
     private Queue<Record> messages;
     private boolean isFinished;
     private long numberOfRecords = 0;
+    private long sequenceNo = 1;
 
     private CountDownLatch latch;
 
@@ -93,9 +94,10 @@ public class EventSender implements Runnable {
 
     public void publishEvent(Record event) {
 
-        ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), this.streamID);
+        ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), this.streamID, this.sequenceNo);
         try {
             this.container.emit(ecgEvent);
+            this.sequenceNo++;
         } catch (MessageProcessingException e) {
             e.printStackTrace();
         }
