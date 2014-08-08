@@ -3,10 +3,9 @@ package edu.colostate.cs.ecg;
 import edu.colostate.cs.analyse.ecg.Record;
 import edu.colostate.cs.worker.api.Container;
 import edu.colostate.cs.worker.comm.exception.MessageProcessingException;
+import edu.colostate.cs.worker.data.Event;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -30,12 +29,15 @@ public class EventSender implements Runnable {
     private Container container;
     private String streamID;
 
+    private List<Event> eventBuffer;
+
     public EventSender(Container container, String streamID, CountDownLatch latch) {
         this.container = container;
         this.streamID = streamID;
         this.messages = new LinkedList<Record>();
         this.isFinished = false;
         this.latch = latch;
+        this.eventBuffer = new ArrayList<Event>();
     }
 
     public synchronized void addRecord(Record record) {
@@ -95,13 +97,17 @@ public class EventSender implements Runnable {
     public void publishEvent(Record event) {
 
         ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), this.streamID, this.sequenceNo);
-        try {
-            this.container.emit(ecgEvent);
-            this.sequenceNo++;
-        } catch (MessageProcessingException e) {
-            e.printStackTrace();
-        }
+        this.eventBuffer.add(ecgEvent);
+        this.sequenceNo++;
 
+        if (this.eventBuffer.size() == 100){
+            try {
+                this.container.emit(this.eventBuffer);
+                this.eventBuffer.clear();
+            } catch (MessageProcessingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void run() {
@@ -112,6 +118,17 @@ public class EventSender implements Runnable {
             this.publishEvent(record);
             this.numberOfRecords++;
         }
+
+        // send remaining events
+        if (!this.eventBuffer.isEmpty()){
+            try {
+                this.container.emit(this.eventBuffer);
+                this.eventBuffer.clear();
+            } catch (MessageProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
         this.latch.countDown();
     }
 }
