@@ -35,18 +35,25 @@ public class ECGProcessor {
             this.lastTime = System.currentTimeMillis();
         }
 
-        // first add the number to numbers
-        int i = 0;
-        int listSize = this.numbers.size();
-        while ((i < listSize) && (this.numbers.get(i).getSequenceNo() < ecgEvent.getSequenceNo())) {
-            i++;
-        }
-
-        if (i == listSize) {
-            // i.e we have come to end of the list
+        if (this.numbers.isEmpty()) {
+            this.numbers.add(ecgEvent);
+        } else if (ecgEvent.getSequenceNo() < this.numbers.get(0).getSequenceNo()) {
+            this.numbers.add(0, ecgEvent);
+        } else if (ecgEvent.getSequenceNo() > this.numbers.get(this.numbers.size() - 1).getSequenceNo()) {
             this.numbers.add(ecgEvent);
         } else {
-            this.numbers.add(i, ecgEvent);
+            int start = 0;
+            int end = this.numbers.size() - 1;
+
+            while (start + 1 < end ) {
+                int mid = (start + end) / 2;
+                if (this.numbers.get(mid).getSequenceNo() > ecgEvent.getSequenceNo()) {
+                    end = mid;
+                } else {
+                    start = mid;
+                }
+            }
+            this.numbers.add(end, ecgEvent);
         }
 
         // send the messages to application as far as we can
