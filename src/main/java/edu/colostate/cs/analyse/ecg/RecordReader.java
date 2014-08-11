@@ -28,7 +28,6 @@ public class RecordReader implements Iterator<Record> {
 
     }
 
-    @Override
     public boolean hasNext() {
         try {
             this.currentLine = this.bufferedReader.readLine();
@@ -39,7 +38,6 @@ public class RecordReader implements Iterator<Record> {
         return false;
     }
 
-    @Override
     public Record next() {
         String[] fieldValues = this.currentLine.split(",");
         double value = 0;
@@ -49,7 +47,6 @@ public class RecordReader implements Iterator<Record> {
         return new Record(Double.parseDouble(fieldValues[0]),value);
     }
 
-    @Override
     public void remove() {
         //To change body of implemented methods use File | Settings | File Templates.
     }

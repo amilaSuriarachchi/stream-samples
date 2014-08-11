@@ -1,0 +1,19 @@
+{
+    "adapters" : [
+        {
+            "name" : "eventProducer",
+            "className" : "edu.colostate.cs.count.EventProducer" ,
+            "parameters" : [
+                { "name" : "threads", "value" : "10"}
+            ],
+            "stream" : {
+                "processor" : "relayProcessor" ,
+                "type" : "random",
+                "nodes" : [
+                    { "ip" : "localhost", "port" : "4001"}
+                ]
+            }
+
+        }
+    ]
+}
