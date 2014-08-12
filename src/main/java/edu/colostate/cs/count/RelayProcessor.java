@@ -20,8 +20,12 @@ public class RelayProcessor implements Processor{
 
     public void onEvent(Event event) {
 
+        CountEvent countEvent = (CountEvent) event;
+        CountEvent newEvent = new CountEvent(countEvent.getTime(),
+                countEvent.getKey1(), countEvent.getKey2(), countEvent.getKey3(), countEvent.getKey4());
+
         try {
-            this.container.emit(event);
+            this.container.emit(newEvent);
         } catch (MessageProcessingException e) {
             e.printStackTrace();
         }

@@ -73,4 +73,44 @@ public class CountEvent extends Event {
                 ", key4='" + key4 + '\'' +
                 '}';
     }
+
+    public double getTime() {
+        return time;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
+    }
+
+    public String getKey1() {
+        return key1;
+    }
+
+    public void setKey1(String key1) {
+        this.key1 = key1;
+    }
+
+    public double getKey2() {
+        return key2;
+    }
+
+    public void setKey2(double key2) {
+        this.key2 = key2;
+    }
+
+    public long getKey3() {
+        return key3;
+    }
+
+    public void setKey3(long key3) {
+        this.key3 = key3;
+    }
+
+    public String getKey4() {
+        return key4;
+    }
+
+    public void setKey4(String key4) {
+        this.key4 = key4;
+    }
 }
