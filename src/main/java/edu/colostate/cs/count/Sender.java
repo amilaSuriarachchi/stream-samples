@@ -6,6 +6,9 @@ import edu.colostate.cs.worker.data.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,24 +21,38 @@ public class Sender implements Runnable {
 
     private Container container;
     private Event event;
+    private int numberOfMsg;
+    private CyclicBarrier startBarrier;
+    private CountDownLatch endLatch;
 
-    public Sender(Container container, Event event) {
+    public Sender(Container container,
+                  Event event,
+                  int numberOfMsg,
+                  CyclicBarrier startBarrier,
+                  CountDownLatch endLatch) {
         this.container = container;
         this.event = event;
+        this.numberOfMsg = numberOfMsg;
+        this.startBarrier = startBarrier;
+        this.endLatch = endLatch;
     }
 
     public void run() {
-        List<Event> events = new ArrayList<Event>();
-        for (int i = 0; i < 100; i++) {
-            events.add(this.event);
-        }
-        while (true) {
 
+        try {
+            this.startBarrier.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        for (int i = 0; i < this.numberOfMsg; i++) {
             try {
-                this.container.emit(events);
+                this.container.emit(this.event);
             } catch (MessageProcessingException e) {
                 e.printStackTrace();
             }
         }
+        this.endLatch.countDown();
     }
 }
