@@ -6,7 +6,7 @@
             "parameters" : [
                 { "name" : "record", "value" : "3000762/"},
                 { "name" : "workingDir", "value" : "/home/amila/csu-msc/research/projects/mimic2/data/"},
-                { "name" : "streams", "value" : "5"},
+                { "name" : "streams", "value" : "20"},
                 { "name" : "startPoint", "value" : "0"}
             ],
             "stream" : {

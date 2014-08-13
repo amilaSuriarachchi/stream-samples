@@ -4,7 +4,8 @@
             "name" : "eventProducer",
             "className" : "edu.colostate.cs.count.EventProducer" ,
             "parameters" : [
-                { "name" : "threads", "value" : "10"}
+                { "name" : "threads", "value" : "10"},
+                { "name" : "messages", "value" : "1000000"}
             ],
             "stream" : {
                 "processor" : "relayProcessor" ,
