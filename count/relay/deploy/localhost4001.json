@@ -1,0 +1,1 @@
+{"processors":[{"name":"relayProcessor","className":"edu.colostate.cs.count.RelayProcessor","streams":[{"processor":"eventCounter","type":"key","nodes":[{"ip":"localhost","port":4000}]}],"parameters":[]}],"adapters":[]}

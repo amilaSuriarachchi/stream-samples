@@ -1,8 +1,0 @@
-{
-    "processors" : [
-        {
-            "name" : "countProcessor",
-            "className" : "edu.colostate.cs.count.CountProcessor"
-        }
-    ]
-}
