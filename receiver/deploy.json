@@ -1,8 +1,0 @@
-{
-    "processors" : [
-        {
-            "name" : "eventReceiver",
-            "className" : "edu.colostate.cs.ecg.EventReceiver"
-        }
-    ]
-}

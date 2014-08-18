@@ -1,0 +1,40 @@
+{
+    "processors": [
+        {
+            "name": "relayProcessor",
+            "className": "edu.colostate.cs.count.RelayProcessor",
+            "cluster" : "relay",
+            "instances" : 2,
+            "receivers" :[
+                {
+                    "name" : "eventProducer",
+                    "type" : "key"
+                }
+            ]
+        },
+        {
+            "name": "eventCounter",
+            "className": "edu.colostate.cs.count.CountProcessor",
+            "cluster" : "count",
+            "instances" : 2,
+            "receivers" :[
+                {
+                    "name" : "relayProcessor",
+                    "type" : "key"
+                }
+            ]
+        }
+    ],
+    "adapters": [
+        {
+            "name": "eventProducer",
+            "className": "edu.colostate.cs.count.EventProducer",
+            "cluster" : "adapter",
+            "instances" : 2,
+            "parameters" : [
+                { "name" : "threads", "value" : "10"},
+                { "name" : "messages", "value" : "1000000"}
+            ]
+        }
+    ]
+}

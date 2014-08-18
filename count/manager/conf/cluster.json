@@ -1,0 +1,34 @@
+{
+    "clusters" : [
+        {
+            "name" : "count",
+            "nodes" : [
+                {
+                    "ip" : "localhost",
+                    "adminPort" : "3000",
+                    "msgPort" : "4000"
+                }
+            ]
+        },
+        {
+            "name" : "relay",
+            "nodes" : [
+                {
+                    "ip" : "localhost",
+                    "adminPort" : "3001",
+                    "msgPort" : "4001"
+                }
+            ]
+        },
+        {
+            "name" : "adapter",
+            "nodes" : [
+                {
+                    "ip" : "localhost",
+                    "adminPort" : "3002",
+                    "msgPort" : "4002"
+                }
+            ]
+        }
+    ]
+}

@@ -1,1 +1,0 @@
-{"processors":[{"name":"eventCounter","className":"edu.colostate.cs.count.CountProcessor","streams":[],"parameters":[]}],"adapters":[]}
