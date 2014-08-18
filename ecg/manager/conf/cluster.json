@@ -1,0 +1,24 @@
+{
+    "clusters" : [
+        {
+            "name" : "ecg",
+            "nodes" : [
+                {
+                    "ip" : "localhost",
+                    "adminPort" : "3000",
+                    "msgPort" : "4000"
+                }
+            ]
+        },
+        {
+            "name" : "adapter",
+            "nodes" : [
+                {
+                    "ip" : "localhost",
+                    "adminPort" : "3002",
+                    "msgPort" : "4002"
+                }
+            ]
+        }
+    ]
+}

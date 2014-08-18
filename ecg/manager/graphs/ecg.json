@@ -1,0 +1,30 @@
+{
+    "processors": [
+        {
+            "name": "eventReceiver",
+            "className": "edu.colostate.cs.ecg.EventReceiver",
+            "cluster" : "ecg",
+            "instances" : 1,
+            "receivers" :[
+                {
+                    "name" : "eventProducer",
+                    "type" : "key"
+                }
+            ]
+        }
+    ],
+    "adapters": [
+        {
+            "name": "eventProducer",
+            "className": "edu.colostate.cs.ecg.EventProducer",
+            "cluster" : "adapter",
+            "instances" : 1,
+            "parameters" : [
+                { "name" : "record", "value" : "3000762/"},
+                { "name" : "workingDir", "value" : "/home/amila/csu-msc/research/projects/mimic2/data/"},
+                { "name" : "streams", "value" : "20"},
+                { "name" : "startPoint", "value" : "0"}
+            ]
+        }
+    ]
+}
