@@ -100,7 +100,7 @@ public class EventSender implements Runnable {
         this.eventBuffer.add(ecgEvent);
         this.sequenceNo++;
 
-        if (this.eventBuffer.size() == 100){
+        if (this.eventBuffer.size() == 200){
             try {
                 this.container.emit(this.eventBuffer);
                 this.eventBuffer.clear();

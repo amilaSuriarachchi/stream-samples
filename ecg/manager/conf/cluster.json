@@ -4,7 +4,22 @@
             "name" : "ecg",
             "nodes" : [
                 {
-                    "ip" : "localhost",
+                    "ip" : "lattice-0",
+                    "adminPort" : "3000",
+                    "msgPort" : "4000"
+                },
+                {
+                    "ip" : "lattice-1",
+                    "adminPort" : "3000",
+                    "msgPort" : "4000"
+                },
+                {
+                    "ip" : "lattice-2",
+                    "adminPort" : "3000",
+                    "msgPort" : "4000"
+                },
+                {
+                    "ip" : "lattice-3",
                     "adminPort" : "3000",
                     "msgPort" : "4000"
                 }
@@ -14,9 +29,9 @@
             "name" : "adapter",
             "nodes" : [
                 {
-                    "ip" : "localhost",
-                    "adminPort" : "3002",
-                    "msgPort" : "4002"
+                    "ip" : "lattice-4",
+                    "adminPort" : "3000",
+                    "msgPort" : "4000"
                 }
             ]
         }

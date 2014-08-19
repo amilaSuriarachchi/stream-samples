@@ -4,7 +4,7 @@
             "name": "eventReceiver",
             "className": "edu.colostate.cs.ecg.EventReceiver",
             "cluster" : "ecg",
-            "instances" : 1,
+            "instances" : 4,
             "receivers" :[
                 {
                     "name" : "eventProducer",
@@ -21,8 +21,8 @@
             "instances" : 1,
             "parameters" : [
                 { "name" : "record", "value" : "3000762/"},
-                { "name" : "workingDir", "value" : "/home/amila/csu-msc/research/projects/mimic2/data/"},
-                { "name" : "streams", "value" : "20"},
+                { "name" : "workingDir", "value" : "/s/chopin/a/grad/amilas/granulas/Granules/"},
+                { "name" : "streams", "value" : "100"},
                 { "name" : "startPoint", "value" : "0"}
             ]
         }
