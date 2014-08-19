@@ -1,13 +1,25 @@
 {
     "processors": [
         {
+            "name": "ecgRelay",
+            "className": "edu.colostate.cs.ecg.ECGRelay",
+            "cluster" : "relay",
+            "instances" : 4,
+            "receivers" :[
+                {
+                    "name" : "eventProducer",
+                    "type" : "key"
+                }
+            ]
+        },
+        {
             "name": "eventReceiver",
             "className": "edu.colostate.cs.ecg.EventReceiver",
             "cluster" : "ecg",
             "instances" : 4,
             "receivers" :[
                 {
-                    "name" : "eventProducer",
+                    "name" : "ecgRelay",
                     "type" : "key"
                 }
             ]

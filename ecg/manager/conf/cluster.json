@@ -7,19 +7,14 @@
                     "ip" : "lattice-0",
                     "adminPort" : "3000",
                     "msgPort" : "4000"
-                },
+                }
+            ]
+        },
+        {
+            "name" : "relay",
+            "nodes" : [
                 {
-                    "ip" : "lattice-1",
-                    "adminPort" : "3000",
-                    "msgPort" : "4000"
-                },
-                {
-                    "ip" : "lattice-2",
-                    "adminPort" : "3000",
-                    "msgPort" : "4000"
-                },
-                {
-                    "ip" : "lattice-3",
+                    "ip" : "lattice-4",
                     "adminPort" : "3000",
                     "msgPort" : "4000"
                 }
@@ -29,7 +24,7 @@
             "name" : "adapter",
             "nodes" : [
                 {
-                    "ip" : "lattice-4",
+                    "ip" : "lattice-8",
                     "adminPort" : "3000",
                     "msgPort" : "4000"
                 }
