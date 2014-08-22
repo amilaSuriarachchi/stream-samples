@@ -106,6 +106,7 @@ public class EventSender implements Runnable {
                 ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), "ecg" + i, this.sequenceNo);
                 this.container.emit(ecgEvent);
             }
+            this.sequenceNo++;
 //            this.eventBuffer.clear();
         } catch (MessageProcessingException e) {
             e.printStackTrace();
