@@ -96,22 +96,18 @@ public class EventSender implements Runnable {
 
     public void publishEvent(Record event) {
 
+        ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), this.streamID, this.sequenceNo);
+        this.eventBuffer.add(ecgEvent);
+        this.sequenceNo++;
 
-//        this.eventBuffer.add(ecgEvent);
-//        this.sequenceNo++;
-
-//        if (this.eventBuffer.size() == 200){
-        try {
-            for (int i = 0; i < 20; i++) {
-                ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), "ecg" + i, this.sequenceNo);
-                this.container.emit(ecgEvent);
+        if (this.eventBuffer.size() == 200){
+            try {
+                this.container.emit(this.eventBuffer);
+                this.eventBuffer.clear();
+            } catch (MessageProcessingException e) {
+                e.printStackTrace();
             }
-            this.sequenceNo++;
-//            this.eventBuffer.clear();
-        } catch (MessageProcessingException e) {
-            e.printStackTrace();
         }
-//        }
     }
 
     public void run() {
@@ -124,7 +120,7 @@ public class EventSender implements Runnable {
         }
 
         // send remaining events
-        if (!this.eventBuffer.isEmpty()) {
+        if (!this.eventBuffer.isEmpty()){
             try {
                 this.container.emit(this.eventBuffer);
                 this.eventBuffer.clear();

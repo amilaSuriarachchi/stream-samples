@@ -22,7 +22,6 @@ public class EventProducer implements Adaptor {
 
     private Container container;
 
-
     String record;
     String workingDir;
     int numOfStreams;
