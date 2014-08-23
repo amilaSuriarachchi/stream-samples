@@ -24,7 +24,8 @@ public class EventProducer implements Adaptor {
 
     String record;
     String workingDir;
-    int numOfStreams;
+    int streams;
+    int threads;
     int startPoint;
 
     private CountDownLatch latch;
@@ -117,12 +118,13 @@ public class EventProducer implements Adaptor {
     public void start() {
 
         //initialise the event senders
-        this.latch = new CountDownLatch(this.numOfStreams);
+        this.latch = new CountDownLatch(this.threads);
 
-        this.eventSenders = new EventSender[this.numOfStreams];
+        this.eventSenders = new EventSender[this.threads];
+        int streamsPerThread = this.streams / this.threads;
 
-        for (int i = 0; i < this.numOfStreams; i++) {
-            this.eventSenders[i] = new EventSender(this.container, "ecg" + (i + this.startPoint), this.latch);
+        for (int i = 0; i < this.threads; i++) {
+            this.eventSenders[i] = new EventSender(this.container,  this.latch, (this.startPoint + streamsPerThread * i), streamsPerThread);
             Thread thread = new Thread(this.eventSenders[i]);
             thread.start();
         }
@@ -136,7 +138,8 @@ public class EventProducer implements Adaptor {
         this.container = container;
         this.record = parameters.get("record");
         this.workingDir = parameters.get("workingDir");
-        this.numOfStreams = Integer.parseInt(parameters.get("streams"));
+        this.streams = Integer.parseInt(parameters.get("streams"));
         this.startPoint = Integer.parseInt(parameters.get("startPoint"));
+        this.threads = Integer.parseInt(parameters.get("threads"));
     }
 }

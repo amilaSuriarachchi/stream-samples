@@ -27,17 +27,22 @@ public class EventSender implements Runnable {
     private CountDownLatch latch;
 
     private Container container;
-    private String streamID;
+
+    // streams start point for this thread
+    private int startPoint;
+    // number of streams this thread has to produce
+    private int streams;
 
     private List<Event> eventBuffer;
 
-    public EventSender(Container container, String streamID, CountDownLatch latch) {
+    public EventSender(Container container, CountDownLatch latch, int startPoint, int streams) {
         this.container = container;
-        this.streamID = streamID;
         this.messages = new LinkedList<Record>();
         this.isFinished = false;
         this.latch = latch;
         this.eventBuffer = new ArrayList<Event>();
+        this.startPoint = startPoint;
+        this.streams = streams;
     }
 
     public synchronized void addRecord(Record record) {
@@ -96,18 +101,19 @@ public class EventSender implements Runnable {
 
     public void publishEvent(Record event) {
 
-        ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), this.streamID, this.sequenceNo);
-        this.eventBuffer.add(ecgEvent);
-        this.sequenceNo++;
-
-        if (this.eventBuffer.size() == 200){
-            try {
-                this.container.emit(this.eventBuffer);
-                this.eventBuffer.clear();
-            } catch (MessageProcessingException e) {
-                e.printStackTrace();
-            }
+        for (int i = 0; i < streams; i++) {
+            ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), "ecg" + (this.startPoint + i), this.sequenceNo);
+            this.eventBuffer.add(ecgEvent);
         }
+
+        this.sequenceNo++;
+        try {
+            this.container.emit(this.eventBuffer);
+            this.eventBuffer.clear();
+        } catch (MessageProcessingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void run() {
@@ -120,7 +126,7 @@ public class EventSender implements Runnable {
         }
 
         // send remaining events
-        if (!this.eventBuffer.isEmpty()){
+        if (!this.eventBuffer.isEmpty()) {
             try {
                 this.container.emit(this.eventBuffer);
                 this.eventBuffer.clear();
