@@ -4,7 +4,10 @@ import edu.colostate.cs.analyse.ecg.Record;
 import edu.colostate.cs.worker.api.Container;
 import edu.colostate.cs.worker.comm.exception.MessageProcessingException;
 import edu.colostate.cs.worker.data.Event;
+import edu.colostate.cs.worker.data.Message;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
@@ -22,7 +25,7 @@ public class EventSender implements Runnable {
     private Queue<Record> messages;
     private boolean isFinished;
     private long numberOfRecords = 0;
-    private long sequenceNo = 1;
+    private int sequenceNo = 1;
 
     private CountDownLatch latch;
 
@@ -108,7 +111,7 @@ public class EventSender implements Runnable {
         }
         this.sequenceNo++;
 
-        if (this.eventBuffer.size() == 200){
+        if (this.eventBuffer.size() == 200) {
             try {
                 this.container.emit(this.eventBuffer);
                 this.eventBuffer.clear();
@@ -139,4 +142,5 @@ public class EventSender implements Runnable {
 
         this.latch.countDown();
     }
+
 }

@@ -43,6 +43,7 @@ public class EventReceiver implements Processor {
         ECGProcessor ecgProcessor = this.keyMap.get(ecgEvent.getKey());
         ecgProcessor.onMessage(ecgEvent);
 
+
     }
 
     public void initialise(Container container, Map<String, String> parameters) {
