@@ -36,7 +36,7 @@ public class PlugAvgDetails {
     }
 
     public float nextPredit() {
-        float lastSliceAvg = this.avgValues.get(this.lastSlice);
+        float lastSliceAvg = this.avgValues.get(this.avgValues.size() - 1);
 
         List<Float> previousAvgs = new ArrayList<Float>();
         int slice = this.lastSlice + 2;

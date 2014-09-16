@@ -29,6 +29,9 @@ public class EventAdapter implements Adaptor {
             DataEvent dataEvent;
             Map<String, Integer> keySeqMap = new HashMap<String, Integer>();
 
+            int totalNumberOfRecords = 0;
+            long startTime = System.currentTimeMillis();
+
             while ((line = bufferedReader.readLine()) != null) {
                 values = line.split(",");
                 // for our queries we only consider the load values
@@ -51,8 +54,13 @@ public class EventAdapter implements Adaptor {
                     dataEvent.setSequenceNo(seqNo);
                     try {
                         this.container.emit(dataEvent);
+                        totalNumberOfRecords++;
                     } catch (MessageProcessingException e) {
                         e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+
+                    if ((totalNumberOfRecords % 500000) == 0){
+                        System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 / (System.currentTimeMillis() - startTime));
                     }
                 }
 
