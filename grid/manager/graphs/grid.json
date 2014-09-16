@@ -76,7 +76,8 @@
                 "instances" : 1,
                 "eventType" : "edu.colostate.cs.grid.event.DataEvent",
                 "parameters" : [
-                    { "name" : "file", "value" : "/home/amila/csu-msc/research/projects/stream-samples/data/first.csv"}
+                    { "name" : "file", "value" : "/home/amila/csu-msc/research/projects/stream-samples/data/sorted100M.csv"},
+                    { "name" : "threads", "value" : "20"}
                 ]
             }
         ]

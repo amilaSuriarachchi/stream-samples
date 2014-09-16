@@ -3,7 +3,6 @@ package edu.colostate.cs.grid;
 import edu.colostate.cs.grid.event.DataEvent;
 import edu.colostate.cs.worker.api.Adaptor;
 import edu.colostate.cs.worker.api.Container;
-import edu.colostate.cs.worker.comm.exception.MessageProcessingException;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * this will read the data file an push the events to be processed by the processors.
@@ -19,8 +19,24 @@ public class EventAdapter implements Adaptor {
 
     private Container container;
     private String fileName;
+    private int threads;
+
+    private int MESSAGE_BUFFER_SIZE = 500;
 
     public void start() {
+
+        // start the threads
+        //initialise the event senders
+        CountDownLatch latch = new CountDownLatch(this.threads);
+
+        EventSender[] eventSenders = new EventSender[this.threads];
+
+        for (int i = 0; i < this.threads; i++) {
+            eventSenders[i] = new EventSender(this.container, latch);
+            Thread thread = new Thread(eventSenders[i]);
+            thread.start();
+        }
+
         //read the file and insert data into system
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(this.fileName));
@@ -31,6 +47,10 @@ public class EventAdapter implements Adaptor {
 
             int totalNumberOfRecords = 0;
             long startTime = System.currentTimeMillis();
+
+            DataEvent[] messageBuffer = new DataEvent[MESSAGE_BUFFER_SIZE];
+            int bufferPointer = 0;
+            int threadToPublish = 0;
 
             while ((line = bufferedReader.readLine()) != null) {
                 values = line.split(",");
@@ -52,20 +72,36 @@ public class EventAdapter implements Adaptor {
                     int seqNo = keySeqMap.get(dataEvent.getKey()).intValue() + 1;
                     keySeqMap.put(dataEvent.getKey(), new Integer(seqNo));
                     dataEvent.setSequenceNo(seqNo);
-                    try {
-                        this.container.emit(dataEvent);
-                        totalNumberOfRecords++;
-                    } catch (MessageProcessingException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    }
 
-                    if ((totalNumberOfRecords % 500000) == 0){
+                    messageBuffer[bufferPointer] = dataEvent;
+                    bufferPointer++;
+                    if (bufferPointer == MESSAGE_BUFFER_SIZE) {
+                        // this means buffer is full.
+                        eventSenders[threadToPublish].addRecords(messageBuffer);
+                        bufferPointer = 0;
+                        threadToPublish = (threadToPublish + 1) % this.threads;
+                    }
+                    totalNumberOfRecords++;
+
+                    if ((totalNumberOfRecords % 500000) == 0) {
                         System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 / (System.currentTimeMillis() - startTime));
                     }
                 }
-
             }
 
+            for (EventSender eventSender : eventSenders) {
+                eventSender.setFinish();
+            }
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Finish sending messages .....");
+            System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 / (System.currentTimeMillis() - startTime));
+
+            bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
@@ -77,5 +113,6 @@ public class EventAdapter implements Adaptor {
     public void initialise(Container container, Map<String, String> parameters) {
         this.container = container;
         this.fileName = parameters.get("file");
+        this.threads = Integer.parseInt(parameters.get("threads"));
     }
 }
