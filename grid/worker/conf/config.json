@@ -1,0 +1,7 @@
+{
+    "ioThreads": 1,
+    "workerPoolSize" : 25,
+    "tcpConnections" : 20,
+    "byteBufferSize" : 8192,
+    "taskBuffMessages" : 20
+}

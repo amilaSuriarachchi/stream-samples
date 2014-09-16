@@ -1,0 +1,54 @@
+    {
+        "clusters" : [
+            {
+                "name" : "avgCal",
+                "nodes" : [
+                    {
+                        "ip" : "localhost",
+                        "adminPort" : "3001",
+                        "msgPort" : "4001"
+                    }
+                ]
+            },
+            {
+                "name" : "plugPredit",
+                "nodes" : [
+                    {
+                        "ip" : "localhost",
+                        "adminPort" : "3002",
+                        "msgPort" : "4002"
+                    }
+                ]
+            },
+            {
+                "name" : "housePredit",
+                "nodes" : [
+                    {
+                        "ip" : "localhost",
+                        "adminPort" : "3003",
+                        "msgPort" : "4003"
+                    }
+                ]
+            },
+            {
+                "name" : "receiver",
+                "nodes" : [
+                    {
+                        "ip" : "localhost",
+                        "adminPort" : "3004",
+                        "msgPort" : "4004"
+                    }
+                ]
+            },
+            {
+                "name" : "adapter",
+                "nodes" : [
+                    {
+                        "ip" : "localhost",
+                        "adminPort" : "3000",
+                        "msgPort" : "4000"
+                    }
+                ]
+            }
+        ]
+    }

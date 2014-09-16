@@ -1,0 +1,83 @@
+    {
+        "processors": [
+            {
+                "name": "avgCal",
+                "className": "edu.colostate.cs.grid.seq.KeyProcessor",
+                "cluster" : "avgCal",
+                "instances" : 4,
+                "eventType" : "edu.colostate.cs.grid.event.PlugAvgEvent",
+                "receivers" :[
+                    {
+                        "name" : "producer",
+                        "type" : "key"
+                    }
+                ],
+                "parameters" : [
+                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.avg.PlugAvgCalculater"}
+                ]
+            },
+            {
+                "name": "plugPredit",
+                "className": "edu.colostate.cs.grid.seq.KeyProcessor",
+                "cluster" : "plugPredit",
+                "instances" : 4,
+                "eventType" : "edu.colostate.cs.grid.event.PlugPredictEvent",
+                "receivers" :[
+                    {
+                        "name" : "avgCal",
+                        "type" : "key"
+                    }
+                ],
+                "parameters" : [
+                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.plug.PlugLoadPredictor"}
+                ]
+            },
+            {
+                "name": "housePredit",
+                "className": "edu.colostate.cs.grid.seq.KeyProcessor",
+                "cluster" : "housePredit",
+                "instances" : 4,
+                "eventType" : "edu.colostate.cs.grid.event.HousePredictEvent",
+                "receivers" :[
+                    {
+                        "name" : "avgCal",
+                        "type" : "key"
+                    }
+                ],
+                "parameters" : [
+                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.house.HouseLoadPredictor"}
+                ]
+            },
+            {
+                "name": "receiver",
+                "className": "edu.colostate.cs.grid.seq.KeyProcessor",
+                "cluster" : "receiver",
+                "instances" : 4,
+                "receivers" :[
+                    {
+                        "name" : "plugPredit",
+                        "type" : "key"
+                    },
+                    {
+                        "name" : "housePredit",
+                        "type" : "key"
+                    }
+                ],
+                "parameters" : [
+                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.receive.PredictionReceiver"}
+                ]
+            }
+        ],
+        "adapters": [
+            {
+                "name": "producer",
+                "className": "edu.colostate.cs.grid.EventAdapter",
+                "cluster" : "adapter",
+                "instances" : 1,
+                "eventType" : "edu.colostate.cs.grid.event.DataEvent",
+                "parameters" : [
+                    { "name" : "file", "value" : "/home/amila/csu-msc/research/projects/stream-samples/data/first.csv"}
+                ]
+            }
+        ]
+    }
