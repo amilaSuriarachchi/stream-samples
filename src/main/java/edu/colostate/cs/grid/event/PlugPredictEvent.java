@@ -25,7 +25,7 @@ public class PlugPredictEvent extends SequenceEvent {
 
     @Override
     public String getKey() {
-        return this.houseID + "_" + this.houseHoldID + "_" + this.plugID;
+        return String.valueOf(this.houseID);
     }
 
     public void serialize(DataOutput dataOutput) throws MessageProcessingException {

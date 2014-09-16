@@ -1,7 +1,9 @@
 package edu.colostate.cs.grid.seq;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,42 +15,21 @@ import java.util.List;
 public class Sequencer {
 
     private SequenceProcessor sequenceProcessor;
-    private List<SequenceEvent> events;
-    private long lastNumberToApplication = 0;
+    private Map<String, EventSequencer> eventTypeMap;
 
     public Sequencer(SequenceProcessor sequenceProcessor) {
         this.sequenceProcessor = sequenceProcessor;
-        this.events = new ArrayList<SequenceEvent>();
+        this.eventTypeMap = new HashMap<String, EventSequencer>();
     }
 
     public synchronized void onEvent(SequenceEvent sequenceEvent) {
 
-        if (this.events.isEmpty()) {
-            this.events.add(sequenceEvent);
-        } else if (sequenceEvent.getSequenceNo() < this.events.get(0).getSequenceNo()) {
-            this.events.add(0, sequenceEvent);
-        } else if (sequenceEvent.getSequenceNo() > this.events.get(this.events.size() - 1).getSequenceNo()) {
-            this.events.add(sequenceEvent);
-        } else {
-            int start = 0;
-            int end = this.events.size() - 1;
-
-            while (start + 1 < end) {
-                int mid = (start + end) / 2;
-                if (this.events.get(mid).getSequenceNo() > sequenceEvent.getSequenceNo()) {
-                    end = mid;
-                } else {
-                    start = mid;
-                }
-            }
-            this.events.add(end, sequenceEvent);
+        if (!this.eventTypeMap.containsKey(sequenceEvent.getClass().getName())){
+             this.eventTypeMap.put(sequenceEvent.getClass().getName(), new EventSequencer(sequenceProcessor));
         }
 
-        // send the messages to application as far as we can
+        EventSequencer eventSequencer = this.eventTypeMap.get(sequenceEvent.getClass().getName());
+        eventSequencer.onEvent(sequenceEvent);
 
-        while ((this.events.size() > 0) && (this.events.get(0).getSequenceNo() == (this.lastNumberToApplication + 1))) {
-            this.sequenceProcessor.onEvent(this.events.remove(0));
-            this.lastNumberToApplication++;
-        }
     }
 }
