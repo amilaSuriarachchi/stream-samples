@@ -14,24 +14,25 @@ import java.util.Map;
  * Time: 1:07 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RelayProcessor implements Processor{
 
-    private Container container;
+    public class RelayProcessor implements Processor{
 
-    public void onEvent(Event event) {
+        private Container container;
 
-        CountEvent countEvent = (CountEvent) event;
-        CountEvent newEvent = new CountEvent(countEvent.getTime(),
-                countEvent.getKey1(), countEvent.getKey2(), countEvent.getKey3(), countEvent.getKey4());
+        public void onEvent(Event event) {
 
-        try {
-            this.container.emit(newEvent);
-        } catch (MessageProcessingException e) {
-            e.printStackTrace();
+            CountEvent countEvent = (CountEvent) event;
+            CountEvent newEvent = new CountEvent(countEvent.getTime(),
+                    countEvent.getKey1(), countEvent.getKey2(), countEvent.getKey3(), countEvent.getKey4());
+
+            try {
+                this.container.emit(newEvent);
+            } catch (MessageProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void initialise(Container container, Map<String, String> parameters) {
+            this.container = container;
         }
     }
-
-    public void initialise(Container container, Map<String, String> parameters) {
-        this.container = container;
-    }
-}

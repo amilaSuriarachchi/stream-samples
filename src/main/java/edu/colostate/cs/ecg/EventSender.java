@@ -8,6 +8,7 @@ import edu.colostate.cs.worker.data.Message;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
@@ -141,6 +142,25 @@ public class EventSender implements Runnable {
         }
 
         this.latch.countDown();
+    }
+
+    public static void main(String[] args) {
+        ECGEvent ecgEvent = new ECGEvent(1000.00,1000.000,"ecg1", 52);
+//        Message message = new Message("receiver", "producer", ecgEvent);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+        try {
+            dataOutputStream.writeUTF("receiver");
+//            dataOutputStream.writeUTF("producer");
+//            ecgEvent.serialize(dataOutputStream);
+            System.out.println("Message size ==> " + byteArrayOutputStream.toByteArray().length);
+//        } catch (MessageProcessingException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 }
