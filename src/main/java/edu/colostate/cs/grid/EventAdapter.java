@@ -83,7 +83,7 @@ public class EventAdapter implements Adaptor {
                     }
                     totalNumberOfRecords++;
 
-                    if ((totalNumberOfRecords % 500000) == 0) {
+                    if ((totalNumberOfRecords % 1000000) == 0) {
                         System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 / (System.currentTimeMillis() - startTime));
                     }
                 }
