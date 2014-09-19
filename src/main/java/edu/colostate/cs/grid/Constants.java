@@ -10,6 +10,7 @@ package edu.colostate.cs.grid;
 public interface Constants {
 
     int startTimeStamp = 1377986401;
+
     int intervalLength = 60;
     int slicesPerDay = 24 * 60 * 60 / intervalLength;
 }

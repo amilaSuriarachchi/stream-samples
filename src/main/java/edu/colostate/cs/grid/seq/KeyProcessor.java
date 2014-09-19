@@ -21,24 +21,13 @@ public class KeyProcessor implements Processor {
     private Container container;
     private Class seqProcessorClass;
 
-    private Map<String, Sequencer> keyMap = new ConcurrentHashMap<String, Sequencer>();
-
-    private AtomicLong atomicLong = new AtomicLong();
-    private long lastTime = System.currentTimeMillis();
+    private Map<String, Sequencer> keyMap;
 
     public KeyProcessor() {
-        this.keyMap = new HashMap<String, Sequencer>();
+        this.keyMap = new ConcurrentHashMap<String, Sequencer>();
     }
 
     public void onEvent(Event event) {
-
-        long currentValue = this.atomicLong.incrementAndGet();
-        if ((currentValue % 1000000) == 0) {
-
-            System.out.println("Message Rate at receiver ==> " + 1000000000 / (System.currentTimeMillis() - this.lastTime)
-                                                                    + " - Current value " + currentValue + " key ");
-            this.lastTime = System.currentTimeMillis();
-        }
 
         if (!this.keyMap.containsKey(event.getKey())) {
             synchronized (this.keyMap) {
