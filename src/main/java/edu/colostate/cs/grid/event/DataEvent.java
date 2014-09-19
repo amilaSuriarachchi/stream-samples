@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class DataEvent extends SequenceEvent {
 
-    private int id;
+    private long id;
     private int timeStamp;
     private float value;
     private byte type;
@@ -32,7 +32,7 @@ public class DataEvent extends SequenceEvent {
     public void serialize(DataOutput dataOutput) throws MessageProcessingException {
         try {
             super.serialize(dataOutput);
-            dataOutput.writeInt(this.id);
+            dataOutput.writeLong(this.id);
             dataOutput.writeInt(this.timeStamp);
             dataOutput.writeFloat(this.value);
             dataOutput.writeByte(this.type);
@@ -47,7 +47,7 @@ public class DataEvent extends SequenceEvent {
     public void parse(DataInput dataInput) throws MessageProcessingException {
         try {
             super.parse(dataInput);
-            this.id = dataInput.readInt();
+            this.id = dataInput.readLong();
             this.timeStamp = dataInput.readInt();
             this.value = dataInput.readFloat();
             this.type = dataInput.readByte();
@@ -59,11 +59,11 @@ public class DataEvent extends SequenceEvent {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

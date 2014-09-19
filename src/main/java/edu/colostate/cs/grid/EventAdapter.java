@@ -57,7 +57,7 @@ public class EventAdapter implements Adaptor {
                 // for our queries we only consider the load values
                 if (values[3].equals("1")) {
                     dataEvent = new DataEvent();
-                    dataEvent.setId(Integer.parseInt(values[0]));
+                    dataEvent.setId(Long.parseLong(values[0]));
                     dataEvent.setTimeStamp(Integer.parseInt(values[1]));
                     dataEvent.setValue(Float.parseFloat(values[2]));
                     dataEvent.setType(Byte.parseByte(values[3]));
@@ -115,4 +115,5 @@ public class EventAdapter implements Adaptor {
         this.fileName = parameters.get("file");
         this.threads = Integer.parseInt(parameters.get("threads"));
     }
+
 }
