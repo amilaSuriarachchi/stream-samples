@@ -32,12 +32,15 @@ public class EventSender implements Runnable {
 
     private List<Event> eventBuffer;
 
-    public EventSender(Container container, CountDownLatch latch) {
+    private int numberOfMsgs;
+
+    public EventSender(Container container, CountDownLatch latch, int numberOfMsgs) {
         this.container = container;
         this.messages = new LinkedList<DataEvent>();
         this.isFinished = false;
         this.latch = latch;
         this.eventBuffer = new ArrayList<Event>();
+        this.numberOfMsgs = numberOfMsgs;
     }
 
     public synchronized void addRecords(DataEvent[] records) {
@@ -83,6 +86,22 @@ public class EventSender implements Runnable {
     public void publishEvent(DataEvent event) {
 
         this.eventBuffer.add(event);
+        //multiply the event by some factor
+        for (int i = 0; i < this.numberOfMsgs; i++){
+            DataEvent dataEvent  = new DataEvent();
+            dataEvent.setSequenceNo(event.getSequenceNo());
+            dataEvent.setId(event.getId());
+            dataEvent.setTimeStamp(event.getTimeStamp());
+            dataEvent.setValue(event.getValue());
+            dataEvent.setType(event.getType());
+            dataEvent.setPlugID(event.getPlugID());
+            dataEvent.setHouseHoldID(event.getHouseHoldID());
+            dataEvent.setHouseID(event.getHouseID() + i * 40);
+            this.eventBuffer.add(dataEvent);
+
+        }
+
+
 
         if (this.eventBuffer.size() == 200) {
             try {

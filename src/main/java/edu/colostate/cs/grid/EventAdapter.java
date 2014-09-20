@@ -20,8 +20,9 @@ public class EventAdapter implements Adaptor {
     private Container container;
     private String fileName;
     private int threads;
+    private int msgPerThread;
 
-    private int MESSAGE_BUFFER_SIZE = 500;
+    private int MESSAGE_BUFFER_SIZE = 1000;
 
     public void start() {
 
@@ -32,7 +33,7 @@ public class EventAdapter implements Adaptor {
         EventSender[] eventSenders = new EventSender[this.threads];
 
         for (int i = 0; i < this.threads; i++) {
-            eventSenders[i] = new EventSender(this.container, latch);
+            eventSenders[i] = new EventSender(this.container, latch, this.msgPerThread);
             Thread thread = new Thread(eventSenders[i]);
             thread.start();
         }
@@ -84,7 +85,7 @@ public class EventAdapter implements Adaptor {
                     totalNumberOfRecords++;
 
                     if ((totalNumberOfRecords % 1000000) == 0) {
-                        System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 / (System.currentTimeMillis() - startTime));
+                        System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 * this.msgPerThread/ (System.currentTimeMillis() - startTime));
                     }
                 }
             }
@@ -99,7 +100,7 @@ public class EventAdapter implements Adaptor {
                 e.printStackTrace();
             }
             System.out.println("Finish sending messages .....");
-            System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 / (System.currentTimeMillis() - startTime));
+            System.out.println("Total records ==> " + totalNumberOfRecords + " Through put ==> " + totalNumberOfRecords * 1000.0 * this.msgPerThread/ (System.currentTimeMillis() - startTime));
 
             bufferedReader.close();
         } catch (FileNotFoundException e) {
@@ -114,6 +115,7 @@ public class EventAdapter implements Adaptor {
         this.container = container;
         this.fileName = parameters.get("file");
         this.threads = Integer.parseInt(parameters.get("threads"));
+        this.msgPerThread = Integer.parseInt(parameters.get("msgPerThread"));
     }
 
 }
