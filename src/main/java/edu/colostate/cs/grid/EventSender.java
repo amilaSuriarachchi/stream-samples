@@ -87,7 +87,7 @@ public class EventSender implements Runnable {
 
         this.eventBuffer.add(event);
         //multiply the event by some factor
-        for (int i = 0; i < this.numberOfMsgs; i++){
+        for (int i = 1; i < this.numberOfMsgs; i++){
             DataEvent dataEvent  = new DataEvent();
             dataEvent.setSequenceNo(event.getSequenceNo());
             dataEvent.setId(event.getId());
@@ -98,12 +98,9 @@ public class EventSender implements Runnable {
             dataEvent.setHouseHoldID(event.getHouseHoldID());
             dataEvent.setHouseID(event.getHouseID() + i * 40);
             this.eventBuffer.add(dataEvent);
-
         }
 
-
-
-        if (this.eventBuffer.size() == 200) {
+        if (this.eventBuffer.size() >= 200) {
             try {
                 this.container.emit(this.eventBuffer);
                 this.eventBuffer.clear();

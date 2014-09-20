@@ -22,7 +22,7 @@ public class EventAdapter implements Adaptor {
     private int threads;
     private int msgPerThread;
 
-    private int MESSAGE_BUFFER_SIZE = 1000;
+    private int MESSAGE_BUFFER_SIZE = 500;
 
     public void start() {
 
