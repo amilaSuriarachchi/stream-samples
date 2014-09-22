@@ -49,22 +49,33 @@
                 ]
             },
             {
-                "name": "receiver",
+                "name": "plugReceiver",
                 "className": "edu.colostate.cs.grid.seq.KeyProcessor",
-                "cluster" : "receiver",
+                "cluster" : "plugReceiver",
                 "instances" : 4,
                 "receivers" :[
                     {
                         "name" : "plugPredit",
                         "type" : "key"
-                    },
+                    }
+                ],
+                "parameters" : [
+                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.receive.PlugPredictionReceiver"}
+                ]
+            },
+            {
+                "name": "houseReceiver",
+                "className": "edu.colostate.cs.grid.seq.KeyProcessor",
+                "cluster" : "houseReceiver",
+                "instances" : 4,
+                "receivers" :[
                     {
                         "name" : "housePredit",
                         "type" : "key"
                     }
                 ],
                 "parameters" : [
-                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.receive.PredictionReceiver"}
+                    { "name" : "seqProcessorClass", "value" : "edu.colostate.cs.grid.receive.HousePredictionReceiver"}
                 ]
             }
         ],
@@ -77,7 +88,8 @@
                 "eventType" : "edu.colostate.cs.grid.event.DataEvent",
                 "parameters" : [
                     { "name" : "file", "value" : "/home/amila/csu-msc/research/projects/stream-samples/data/sorted100M.csv"},
-                    { "name" : "threads", "value" : "20"}
+                    { "name" : "threads", "value" : "20"},
+                    { "name" : "msgPerThread", "value" : "3"}
                 ]
             }
         ]

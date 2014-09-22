@@ -21,7 +21,7 @@ public class EventSequencer {
         this.events = new ArrayList<SequenceEvent>();
     }
 
-    public void onEvent(SequenceEvent sequenceEvent) {
+    public synchronized void onEvent(SequenceEvent sequenceEvent) {
 
         if (this.events.isEmpty()) {
             this.events.add(sequenceEvent);

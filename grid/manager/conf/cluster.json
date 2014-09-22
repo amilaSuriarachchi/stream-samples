@@ -31,12 +31,22 @@
                 ]
             },
             {
-                "name" : "receiver",
+                "name" : "houseReceiver",
                 "nodes" : [
                     {
                         "ip" : "localhost",
                         "adminPort" : "3004",
                         "msgPort" : "4004"
+                    }
+                ]
+            },
+            {
+                "name" : "plugReceiver",
+                "nodes" : [
+                    {
+                        "ip" : "localhost",
+                        "adminPort" : "3005",
+                        "msgPort" : "4005"
                     }
                 ]
             },
