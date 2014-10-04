@@ -9,6 +9,7 @@ import edu.colostate.cs.worker.data.Event;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -25,7 +26,7 @@ public class EventReceiver implements Processor {
     private Map<String, ECGProcessor> keyMap;
 
     public EventReceiver() {
-        this.keyMap = new HashMap<String, ECGProcessor>();
+        this.keyMap = new ConcurrentHashMap<String, ECGProcessor>();
     }
 
     public void onEvent(Event event) {
