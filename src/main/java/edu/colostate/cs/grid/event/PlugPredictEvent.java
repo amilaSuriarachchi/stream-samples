@@ -23,7 +23,7 @@ public class PlugPredictEvent extends SequenceEvent {
     private int houseHoldID;
     private int plugID;
 
-    @Override
+
     public String getKey() {
         return String.valueOf(this.houseID);
     }

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Time: 10:34 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class SequenceEvent extends Event {
+public abstract class SequenceEvent implements Event {
 
     private int sequenceNo;
 

@@ -3,9 +3,7 @@ package edu.colostate.cs.grid.event;
 import edu.colostate.cs.grid.seq.SequenceEvent;
 import edu.colostate.cs.worker.comm.exception.MessageProcessingException;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +12,7 @@ import java.io.IOException;
  * Time: 6:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class DataEvent extends SequenceEvent {
+public class DataEvent extends SequenceEvent implements Serializable {
 
     private long id;
     private int timeStamp;
@@ -24,7 +22,7 @@ public class DataEvent extends SequenceEvent {
     private int houseHoldID;
     private int houseID;
 
-    @Override
+
     public String getKey() {
         return String.valueOf(this.houseID);
     }
@@ -114,5 +112,6 @@ public class DataEvent extends SequenceEvent {
     public void setHouseID(int houseID) {
         this.houseID = houseID;
     }
+
 
 }

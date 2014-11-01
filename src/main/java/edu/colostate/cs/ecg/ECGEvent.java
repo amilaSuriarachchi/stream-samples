@@ -3,9 +3,7 @@ package edu.colostate.cs.ecg;
 import edu.colostate.cs.worker.comm.exception.MessageProcessingException;
 import edu.colostate.cs.worker.data.Event;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,12 +12,13 @@ import java.io.IOException;
  * Time: 12:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ECGEvent extends Event {
+public class ECGEvent implements Event, Serializable {
 
     private int sequenceNo;
     private double time;
     private double value;
     private String streamID;
+    private long timeStamp;
 
     public ECGEvent() {
     }
@@ -31,7 +30,7 @@ public class ECGEvent extends Event {
         this.streamID = streamID;
     }
 
-    @Override
+
     public String getKey() {
         return this.streamID;
     }
@@ -42,6 +41,7 @@ public class ECGEvent extends Event {
             dataOutput.writeDouble(this.time);
             dataOutput.writeDouble(this.value);
             dataOutput.writeUTF(this.streamID);
+            dataOutput.writeLong(this.timeStamp);
         } catch (IOException e) {
             throw new MessageProcessingException("Can not read values ", e);
         }
@@ -53,6 +53,7 @@ public class ECGEvent extends Event {
             this.time = dataInput.readDouble();
             this.value = dataInput.readDouble();
             this.streamID = dataInput.readUTF();
+            this.timeStamp = dataInput.readLong();
         } catch (IOException e) {
             throw new MessageProcessingException("Can not write the message ", e);
         }
@@ -88,5 +89,13 @@ public class ECGEvent extends Event {
 
     public void setStreamID(String streamID) {
         this.streamID = streamID;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

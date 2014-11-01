@@ -21,7 +21,7 @@ public class HousePredictEvent extends SequenceEvent {
     private int houseID;
     private float predictedLoad;
 
-    @Override
+
     public String getKey() {
         return String.valueOf(this.houseID);
     }

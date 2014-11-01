@@ -24,7 +24,7 @@ public class PlugAvgEvent extends SequenceEvent {
     private int plugID;
 
 
-    @Override
+
     public String getKey() {
         return String.valueOf(this.houseID);
     }

@@ -29,11 +29,11 @@ public class ECGProcessor {
     public synchronized void onMessage(ECGEvent ecgEvent) {
 
         //TODO: implement message ordering
-        long currentValue = this.atomicLong.incrementAndGet();
-        if ((currentValue % 1000000) == 0) {
-            System.out.println("Message Rate ==> " + 1000000000 / (System.currentTimeMillis() - this.lastTime) + " - Current value " + currentValue);
-            this.lastTime = System.currentTimeMillis();
-        }
+//        long currentValue = this.atomicLong.incrementAndGet();
+//        if ((currentValue % 1000000) == 0) {
+//            System.out.println("Message Rate ==> " + 1000000000 / (System.currentTimeMillis() - this.lastTime) + " - Current value " + currentValue);
+//            this.lastTime = System.currentTimeMillis();
+//        }
 
         if (this.numbers.isEmpty()) {
             this.numbers.add(ecgEvent);

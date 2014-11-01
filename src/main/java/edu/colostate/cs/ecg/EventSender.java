@@ -107,6 +107,7 @@ public class EventSender implements Runnable {
 
         for (int i = 0; i < streams; i++) {
             ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), "ecg" + (this.startPoint + i), this.sequenceNo);
+            ecgEvent.setTimeStamp(System.currentTimeMillis());
             this.eventBuffer.add(ecgEvent);
             this.numberOfRecords++;
         }
@@ -144,23 +145,6 @@ public class EventSender implements Runnable {
         this.latch.countDown();
     }
 
-    public static void main(String[] args) {
-        ECGEvent ecgEvent = new ECGEvent(1000.00,1000.000,"ecg1", 52);
-//        Message message = new Message("receiver", "producer", ecgEvent);
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        try {
-            dataOutputStream.writeUTF("receiver");
-//            dataOutputStream.writeUTF("producer");
-//            ecgEvent.serialize(dataOutputStream);
-            System.out.println("Message size ==> " + byteArrayOutputStream.toByteArray().length);
-//        } catch (MessageProcessingException e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
 
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Time: 1:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CountEvent extends Event {
+public class CountEvent implements Event {
 
     private double time;
     private String key1;
@@ -33,7 +33,7 @@ public class CountEvent extends Event {
         this.key4 = key4;
     }
 
-    @Override
+
     public String getKey() {
         return this.key1;
     }
