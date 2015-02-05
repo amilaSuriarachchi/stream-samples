@@ -18,7 +18,6 @@ public class ECGEvent implements Event, Serializable {
     private double time;
     private double value;
     private String streamID;
-    private long timeStamp;
 
     public ECGEvent() {
     }
@@ -41,7 +40,6 @@ public class ECGEvent implements Event, Serializable {
             dataOutput.writeDouble(this.time);
             dataOutput.writeDouble(this.value);
             dataOutput.writeUTF(this.streamID);
-            dataOutput.writeLong(this.timeStamp);
         } catch (IOException e) {
             throw new MessageProcessingException("Can not read values ", e);
         }
@@ -53,7 +51,6 @@ public class ECGEvent implements Event, Serializable {
             this.time = dataInput.readDouble();
             this.value = dataInput.readDouble();
             this.streamID = dataInput.readUTF();
-            this.timeStamp = dataInput.readLong();
         } catch (IOException e) {
             throw new MessageProcessingException("Can not write the message ", e);
         }
@@ -89,13 +86,5 @@ public class ECGEvent implements Event, Serializable {
 
     public void setStreamID(String streamID) {
         this.streamID = streamID;
-    }
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
     }
 }

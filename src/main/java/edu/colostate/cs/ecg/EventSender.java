@@ -107,7 +107,6 @@ public class EventSender implements Runnable {
 
         for (int i = 0; i < streams; i++) {
             ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), "ecg" + (this.startPoint + i), this.sequenceNo);
-            ecgEvent.setTimeStamp(System.currentTimeMillis());
             this.eventBuffer.add(ecgEvent);
             this.numberOfRecords++;
         }
