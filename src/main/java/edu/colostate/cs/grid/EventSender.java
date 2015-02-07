@@ -97,18 +97,12 @@ public class EventSender implements Runnable {
             dataEvent.setPlugID(event.getPlugID());
             dataEvent.setHouseHoldID(event.getHouseHoldID());
             dataEvent.setHouseID(event.getHouseID() + i * 40);
-            this.eventBuffer.add(dataEvent);
-        }
-
-        if (this.eventBuffer.size() >= 200) {
             try {
-                this.container.emit(this.eventBuffer);
-                this.eventBuffer.clear();
+                this.container.emit(dataEvent);
             } catch (MessageProcessingException e) {
-                e.printStackTrace();
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
-
     }
 
     public void run() {
@@ -120,14 +114,14 @@ public class EventSender implements Runnable {
         }
 
         // send remaining events
-        if (!this.eventBuffer.isEmpty()) {
-            try {
-                this.container.emit(this.eventBuffer);
-                this.eventBuffer.clear();
-            } catch (MessageProcessingException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!this.eventBuffer.isEmpty()) {
+//            try {
+//                this.container.emit(this.eventBuffer);
+//                this.eventBuffer.clear();
+//            } catch (MessageProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         this.latch.countDown();
     }

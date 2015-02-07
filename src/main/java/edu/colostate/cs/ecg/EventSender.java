@@ -107,20 +107,14 @@ public class EventSender implements Runnable {
 
         for (int i = 0; i < streams; i++) {
             ECGEvent ecgEvent = new ECGEvent(event.getTime(), event.getValue(), "ecg" + (this.startPoint + i), this.sequenceNo);
-            this.eventBuffer.add(ecgEvent);
+            try {
+                this.container.emit(ecgEvent);
+            } catch (MessageProcessingException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
             this.numberOfRecords++;
         }
         this.sequenceNo++;
-
-        if (this.eventBuffer.size() == 200) {
-            try {
-                this.container.emit(this.eventBuffer);
-                this.eventBuffer.clear();
-            } catch (MessageProcessingException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     public void run() {
@@ -132,14 +126,14 @@ public class EventSender implements Runnable {
         }
 
         // send remaining events
-        if (!this.eventBuffer.isEmpty()) {
-            try {
-                this.container.emit(this.eventBuffer);
-                this.eventBuffer.clear();
-            } catch (MessageProcessingException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!this.eventBuffer.isEmpty()) {
+//            try {
+//                this.container.emit(this.eventBuffer);
+//                this.eventBuffer.clear();
+//            } catch (MessageProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         this.latch.countDown();
     }
