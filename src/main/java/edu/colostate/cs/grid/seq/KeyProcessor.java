@@ -29,15 +29,15 @@ public class KeyProcessor implements Processor {
 
     public void onEvent(Event event) {
 
-//        if (!this.keyMap.containsKey(event.getKey())) {
-//            synchronized (this.keyMap) {
-//                if (!this.keyMap.containsKey(event.getKey())) {
-//                    this.keyMap.put(event.getKey(), new EventSequencer(getNewInstance(event.getKey())));
-//                }
-//            }
-//        }
-//
-//        this.keyMap.get(event.getKey()).onEvent((SequenceEvent) event);
+        if (!this.keyMap.containsKey(event.getKey())) {
+            synchronized (this.keyMap) {
+                if (!this.keyMap.containsKey(event.getKey())) {
+                    this.keyMap.put(event.getKey(), new EventSequencer(getNewInstance(event.getKey())));
+                }
+            }
+        }
+
+        this.keyMap.get(event.getKey()).onEvent((SequenceEvent) event);
 
     }
 

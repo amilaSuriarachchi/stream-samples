@@ -1,7 +1,12 @@
 package edu.colostate.cs.grid.seq;
 
+import edu.colostate.cs.analyse.ecg.Record;
+import edu.colostate.cs.ecg.ECGEvent;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,40 +18,26 @@ import java.util.List;
 public class EventSequencer {
 
     private SequenceProcessor sequenceProcessor;
-    private List<SequenceEvent> events;
-    private long lastNumberToApplication = 0;
+    private int lastNumberToApplication = 0;
+
+    private Map<Integer, SequenceEvent> seqEventMap = new HashMap<Integer, SequenceEvent>(10000);
 
     public EventSequencer(SequenceProcessor sequenceProcessor) {
         this.sequenceProcessor = sequenceProcessor;
-        this.events = new ArrayList<SequenceEvent>();
     }
 
     public synchronized void onEvent(SequenceEvent sequenceEvent) {
 
-        if (this.events.isEmpty()) {
-            this.events.add(sequenceEvent);
-        } else if (sequenceEvent.getSequenceNo() < this.events.get(0).getSequenceNo()) {
-            this.events.add(0, sequenceEvent);
-        } else if (sequenceEvent.getSequenceNo() > this.events.get(this.events.size() - 1).getSequenceNo()) {
-            this.events.add(sequenceEvent);
+        if ((this.lastNumberToApplication + 1) == sequenceEvent.getSequenceNo()) {
+            this.sequenceProcessor.onEvent(sequenceEvent);
+            this.lastNumberToApplication++;
         } else {
-            int start = 0;
-            int end = this.events.size() - 1;
-
-            while (start + 1 < end) {
-                int mid = (start + end) / 2;
-                if (this.events.get(mid).getSequenceNo() > sequenceEvent.getSequenceNo()) {
-                    end = mid;
-                } else {
-                    start = mid;
-                }
-            }
-            this.events.add(end, sequenceEvent);
+            this.seqEventMap.put(sequenceEvent.getSequenceNo(), sequenceEvent);
         }
 
-        // send the messages to application as far as we can
-        while ((this.events.size() > 0) && (this.events.get(0).getSequenceNo() == (this.lastNumberToApplication + 1))) {
-            this.sequenceProcessor.onEvent(this.events.remove(0));
+        while (this.seqEventMap.containsKey(this.lastNumberToApplication + 1)) {
+            SequenceEvent nextEvent = this.seqEventMap.remove(this.lastNumberToApplication + 1);
+            this.sequenceProcessor.onEvent(nextEvent);
             this.lastNumberToApplication++;
         }
     }
