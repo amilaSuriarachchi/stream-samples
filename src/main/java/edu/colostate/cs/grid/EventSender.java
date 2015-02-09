@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class EventSender implements Runnable {
 
-    public static final int MAX_SIZE = 1000;
+    public static final int MAX_SIZE = 500;
 
     private Queue<DataEvent> messages;
     private boolean isFinished;
@@ -85,7 +85,6 @@ public class EventSender implements Runnable {
 
     public void publishEvent(DataEvent event) {
 
-        this.eventBuffer.add(event);
         //multiply the event by some factor
         for (int i = 1; i < this.numberOfMsgs; i++){
             DataEvent dataEvent  = new DataEvent();
@@ -112,16 +111,6 @@ public class EventSender implements Runnable {
         while ((record = getRecord()) != null) {
             this.publishEvent(record);
         }
-
-        // send remaining events
-//        if (!this.eventBuffer.isEmpty()) {
-//            try {
-//                this.container.emit(this.eventBuffer);
-//                this.eventBuffer.clear();
-//            } catch (MessageProcessingException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         this.latch.countDown();
     }

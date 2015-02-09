@@ -51,12 +51,12 @@ public class PlugAvgCalculater implements SequenceProcessor {
 
         // we always sends a message to next hop to keep the message rate high. This message contains the details of
         // last completed time slice.
-        PlugAvgEvent plugAvgEvent = getEvent(plugDetails, plugKey);
-        try {
-            this.container.emit(plugAvgEvent);
-        } catch (MessageProcessingException e) {
-            e.printStackTrace();
-        }
+//        PlugAvgEvent plugAvgEvent = getEvent(plugDetails, plugKey);
+//        try {
+//            this.container.emit(plugAvgEvent);
+//        } catch (MessageProcessingException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
