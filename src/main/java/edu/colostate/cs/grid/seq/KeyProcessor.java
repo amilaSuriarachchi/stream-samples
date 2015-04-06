@@ -21,10 +21,10 @@ public class KeyProcessor implements Processor {
     private Container container;
     private Class seqProcessorClass;
 
-    private Map<String, EventSequencer> keyMap;
+    private Map<Object, EventSequencer> keyMap;
 
     public KeyProcessor() {
-        this.keyMap = new ConcurrentHashMap<String, EventSequencer>();
+        this.keyMap = new ConcurrentHashMap<Object, EventSequencer>();
     }
 
     public void onEvent(Event event) {
@@ -32,7 +32,7 @@ public class KeyProcessor implements Processor {
         if (!this.keyMap.containsKey(event.getKey())) {
             synchronized (this.keyMap) {
                 if (!this.keyMap.containsKey(event.getKey())) {
-                    this.keyMap.put(event.getKey(), new EventSequencer(getNewInstance(event.getKey())));
+                    this.keyMap.put(event.getKey(), new EventSequencer(getNewInstance((String)event.getKey())));
                 }
             }
         }

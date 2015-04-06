@@ -12,7 +12,7 @@ import java.io.*;
  * Time: 12:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ECGEvent implements Event, Serializable {
+public class ECGEvent extends Event {
 
     private int sequenceNo;
     private double time;
